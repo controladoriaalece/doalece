@@ -1,0 +1,44 @@
+# .github/workflows/run_doalece_scraper.yml
+
+name: Baixar e Enviar Diário Oficial da ALECE
+
+# Gatilhos (Triggers) para o workflow
+on:
+  # Permite que você execute este workflow manualmente pela aba "Actions"
+  workflow_dispatch:
+
+  # Agenda a execução do script
+  schedule:
+    # Executa todos os dias às 11:00 UTC (8:00 no horário de Brasília)
+    # Use o formato cron: minuto hora dia(mês) mês dia(semana)
+    - cron: '0 16 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Usa uma máquina virtual Linux (Ubuntu)
+
+    steps:
+      # 1. Clona o seu repositório para a máquina virtual
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Configura o ambiente Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' # Você pode escolher a versão do Python
+
+      # 3. Instala as dependências do Python a partir do requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Executa o seu script Python
+      - name: Run Python script
+        # Passa os Segredos do GitHub como variáveis de ambiente para o script
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+        # Substitua 'seu_script.py' pelo nome real do seu arquivo
+        run: python seu_script.py
