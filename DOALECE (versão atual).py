@@ -16,8 +16,13 @@ from email import encoders
 # ==============================================================================
 # SEÇÃO DE CONFIGURAÇÃO DE E-MAIL
 # ==============================================================================
-email_remetente = "controladoriaalece@gmail.com"
-senha_remetente = "fwovhxqbwgyorkwo"
+email_remetente = os.environ.get("GMAIL_USER")
+senha_remetente = os.environ.get("GMAIL_PASSWORD")
+# Verifica se as credenciais foram carregadas
+if not email_remetente or not senha_remetente:
+    print("ERRO CRÍTICO: As variáveis de ambiente GMAIL_USER e/ou GMAIL_PASSWORD não foram definidas.")
+    # Encerra o script se as credenciais não estiverem disponíveis
+    exit()
 email_destinatario = "controladoriaalece@al.ce.gov.br"
 smtp_servidor = "smtp.gmail.com"
 smtp_porta = 587
