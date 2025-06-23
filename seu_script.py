@@ -73,7 +73,7 @@ def extrair_conteudo_formatado(caminho_arquivo_pdf):
         return "Ocorreu um erro grave e irrecuperável ao tentar ler o arquivo PDF.\n"
 
 def enviar_email_com_anexos(lista_de_caminhos_anexos, data_diario_formatada, info_edicao, texto_publicacoes):
-    assunto = f"📰 DOALECE de {data_diario_formatada} ({info_edicao}) 📅"
+    assunto = f"📰🟡 DOALECE de {data_diario_formatada} ({info_edicao}) 📅"
     print(f"📧 Preparando para enviar e-mail para {email_destinatario}...")
     try:
         msg = MIMEMultipart()
