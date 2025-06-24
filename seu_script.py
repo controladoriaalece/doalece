@@ -77,7 +77,7 @@ def enviar_email_com_anexos(lista_de_caminhos_anexos, data_diario_formatada, inf
     print(f"📧 Preparando para enviar e-mail para {email_destinatario}...")
     try:
         msg = MIMEMultipart()
-        msg['From'] = email_remetente
+        msg['From'] = f"Robô DOALECE <{email_remetente}>"
         msg['To'] = email_destinatario
         msg['Subject'] = assunto
         corpo = (f"🤖 Olá,\n\n"
