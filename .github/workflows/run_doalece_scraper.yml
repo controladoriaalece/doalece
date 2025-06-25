@@ -11,7 +11,7 @@ on:
   schedule:
     # Executa todos os dias às 11:00 UTC (8:00 no horário de Brasília)
     # Use o formato cron: minuto hora dia(mês) mês dia(semana)
-    - cron: '0 19 * * 1-5'
+    - cron: '0 21 * * 1-5'
 
 jobs:
   build:
