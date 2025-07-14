@@ -28,8 +28,8 @@ if not email_remetente or not senha_remetente:
 # Todos os e-mails nesta lista receberão a mensagem em Cópia Oculta (Bcc).
 # Ninguém verá os outros destinatários.
 lista_destinatarios = [
-    "edipo.henrique@al.ce.gov.br",
-    "edipohpo87@gmail.com"
+    "controladoriaalece@al.ce.gov.br",
+    "codinsalece@al.ce.gov.br"
     # Adicione quantos e-mails quiser aqui, separados por vírgula
 ]
 
