@@ -24,7 +24,8 @@ if not email_remetente or not senha_remetente:
     # Encerra o script se as credenciais não estiverem disponíveis
     exit()
 email_destinatario = [
-    "edipo.henrique@al.ce.gov.br",
+    "edipohpo@hotmail.com", 
+    "edipo.henrique@al.ce.gov.br", 
     "edipohpo87@gmail.com"
 ]
 smtp_servidor = "smtp.gmail.com"
