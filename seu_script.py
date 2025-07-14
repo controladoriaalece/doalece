@@ -14,19 +14,29 @@ from email.mime.base import MIMEBase
 from email import encoders
 
 # ==============================================================================
-# SEÇÃO DE CONFIGURAÇÃO DE E-MAIL
+# SEÇÃO DE CONFIGURAÇÃO DE E-MAIL (MODIFICADA)
 # ==============================================================================
 email_remetente = os.environ.get("GMAIL_USER")
 senha_remetente = os.environ.get("GMAIL_PASSWORD")
+
 # Verifica se as credenciais foram carregadas
 if not email_remetente or not senha_remetente:
     print("ERRO CRÍTICO: As variáveis de ambiente GMAIL_USER e/ou GMAIL_PASSWORD não foram definidas.")
     # Encerra o script se as credenciais não estiverem disponíveis
     exit()
-email_destinatario = "edipo.henrique@al.ce.gov.br"
+
+# Todos os e-mails nesta lista receberão a mensagem em Cópia Oculta (Bcc).
+# Ninguém verá os outros destinatários.
+lista_destinatarios = [
+    "edipo.henrique@al.ce.gov.br",
+    "edipohpo87@gmail.com"
+    # Adicione quantos e-mails quiser aqui, separados por vírgula
+]
+
 smtp_servidor = "smtp.gmail.com"
 smtp_porta = 587
 # ==============================================================================
+
 
 def extrair_conteudo_formatado(caminho_arquivo_pdf):
     """
@@ -72,14 +82,26 @@ def extrair_conteudo_formatado(caminho_arquivo_pdf):
         traceback.print_exc()
         return "Ocorreu um erro grave e irrecuperável ao tentar ler o arquivo PDF.\n"
 
+# ==============================================================================
+# FUNÇÃO DE ENVIO DE E-MAIL (MODIFICADA)
+# ==============================================================================
 def enviar_email_com_anexos(lista_de_caminhos_anexos, data_diario_formatada, info_edicao, texto_publicacoes):
     assunto = f"📰🟡 DOALECE de {data_diario_formatada} ({info_edicao}) 📅"
-    print(f"📧 Preparando para enviar e-mail para {email_destinatario}...")
+    
+    # Verifica se a lista de destinatários não está vazia
+    if not lista_destinatarios:
+        print("⚠️ A lista de destinatários está vazia. Nenhum e-mail será enviado.")
+        return
+
+    print(f"📧 Preparando para enviar e-mail em cópia oculta para {len(lista_destinatarios)} destinatário(s)...")
+
     try:
         msg = MIMEMultipart()
         msg['From'] = f"Robô DOALECE <{email_remetente}>"
-        msg['To'] = email_destinatario
+        # IMPORTANTE: Não definimos o cabeçalho 'To' ou 'Bcc'.
+        # A ausência do 'To' faz com que apareça "destinatários não revelados".
         msg['Subject'] = assunto
+        
         corpo = (f"🤖 Olá,\n\n"
                  f"Seguem em anexo os arquivos PDF e ODT do Diário Oficial da Assembleia Legislativa do Ceará de {data_diario_formatada} ({info_edicao}).\n\n"
                  f"Abaixo, segue o conteúdo extraído do documento para consulta rápida.\n\n"
@@ -105,11 +127,16 @@ def enviar_email_com_anexos(lista_de_caminhos_anexos, data_diario_formatada, inf
         servidor = smtplib.SMTP(smtp_servidor, smtp_porta)
         servidor.starttls()
         servidor.login(email_remetente, senha_remetente)
-        servidor.send_message(msg)
+        
+        # O método send_message envia para a lista completa de destinatários
+        servidor.send_message(msg, to_addrs=lista_destinatarios)
+        
         servidor.quit()
         print("✅ E-mail enviado com sucesso!")
+        
     except Exception as e:
         print(f"\n❌ ERRO DE E-MAIL: Não foi possível enviar o e-mail. Erro: {e}")
+        traceback.print_exc()
 
 def baixar_diario_mais_recente():
     url_busca_api = "https://doalece.al.ce.gov.br/api/publico/ultimas-edicoes"
