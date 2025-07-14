@@ -23,7 +23,7 @@ if not email_remetente or not senha_remetente:
     print("ERRO CRÍTICO: As variáveis de ambiente GMAIL_USER e/ou GMAIL_PASSWORD não foram definidas.")
     # Encerra o script se as credenciais não estiverem disponíveis
     exit()
-email_destinatario = "controladoriaalece@al.ce.gov.br"
+email_destinatario = "codinsalece@al.ce.gov.br"
 smtp_servidor = "smtp.gmail.com"
 smtp_porta = 587
 # ==============================================================================
